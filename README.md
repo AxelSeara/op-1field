@@ -25,17 +25,30 @@ This project is a single-page interactive manual designed to help musicians and 
 - Stay specific to OP-1 Field behavior
 - Make complex concepts easier through A/B exercises and interactive blocks
 
+## Project structure
+
+- `index.html` — main course page and content
+- `assets/css/main.css` — all styling
+- `assets/js/core.js` — navigation/progress/language logic
+- `assets/js/widgets.js` — educational interactive widgets
+- `docs/EDITING_GUIDE.md` — contributor editing workflow
+- `op1-curso-final.html` — compatibility redirect to `index.html`
+
+## Local usage
+
+Open `index.html` directly in a browser.
+
 ## Collaborate
 
 Contributions are very welcome.
 
-If you want to help, you can:
+You can help by:
 
-- Improve clarity in explanations
-- Propose better exercises
-- Fix structure/HTML issues
-- Suggest OP-1 Field-specific corrections based on official documentation
-- Add useful educational interactive components
+- Improving clarity in explanations
+- Proposing better exercises
+- Fixing structure/HTML issues
+- Suggesting OP-1 Field-specific corrections based on official documentation
+- Adding useful educational interactive components
 
 Please open an issue for ideas or submit a pull request.
 
