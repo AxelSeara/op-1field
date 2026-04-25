@@ -35,6 +35,18 @@ npm start
 
 ## QA checks
 
+Run stylistic ESLint checks:
+
+```bash
+npm run lint
+```
+
+Auto-fix stylistic issues:
+
+```bash
+npm run lint:fix
+```
+
 Run locale + structure checks:
 
 ```bash

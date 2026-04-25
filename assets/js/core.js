@@ -307,7 +307,7 @@ function buildSub(i) {
     return;
   }
   box.innerHTML = list.map((s, n) =>
-    `<button class="sni" onclick="goSec('${s.i}')"><span class="sni-num">${String(i).padStart(2, '0')}.${n + 1}</span>${s.t}</button>`
+    `<button class="sni" onclick="goSec('${s.i}')"><span class="sni-num">${String(i).padStart(2, '0')}.${n + 1}</span>${s.t}</button>`,
   ).join('');
 }
 

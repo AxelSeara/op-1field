@@ -38,7 +38,7 @@
 
     if (vars && typeof vars === 'object') {
       return msg.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, name) =>
-        Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : ''
+        Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : '',
       );
     }
 

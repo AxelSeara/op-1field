@@ -11,6 +11,8 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win nsis",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "qa:locales": "node scripts/check-locales.mjs",
     "qa:structure": "node scripts/check-course-structure.mjs",
     "qa:content": "node scripts/check-content-quality.mjs",
@@ -19,9 +21,13 @@
     "qa:full": "npm run qa && npm run test:e2e"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
     "@playwright/test": "^1.59.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "electron": "^31.7.7",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.13.3",
+    "eslint": "^9.39.4",
+    "globals": "^17.5.0"
   },
   "build": {
     "appId": "com.streetshark.op1field",

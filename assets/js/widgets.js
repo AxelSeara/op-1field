@@ -39,7 +39,7 @@ const wmGenresEs = [
   [100,115,'funk · soul · pop midtempo'],
   [115,130,'house · disco'],
   [130,145,'techno · trance'],
-  [145,200,'drum & bass · footwork']
+  [145,200,'drum & bass · footwork'],
 ];
 const wmGenresEn = [
   [40,60,'drone · extreme ambient'],
@@ -48,7 +48,7 @@ const wmGenresEn = [
   [100,115,'funk · soul · midtempo pop'],
   [115,130,'house · disco'],
   [130,145,'techno · trance'],
-  [145,200,'drum & bass · footwork']
+  [145,200,'drum & bass · footwork'],
 ];
 const wmGenresJa = [
   [40,60,'ドローン · 極端にアンビエント'],
@@ -57,7 +57,7 @@ const wmGenresJa = [
   [100,115,'ファンク · ソウル · ミッドテンポ・ポップ'],
   [115,130,'house · disco'],
   [130,145,'techno · trance'],
-  [145,200,'drum & bass · footwork']
+  [145,200,'drum & bass · footwork'],
 ];
 let wmBpm=85, wmSwingAmt=0, wmPlaying=false, wmTimer=null, wmBeat=0, wmNextTime=0;
 
@@ -148,15 +148,15 @@ const wiNotesJa = ['ファ','ファ#','ソ','ソ#','ラ','ラ#','シ','ド','ド
 const wiIsBlack = [false,true,false,true,false,false,true,false,true,false,true,false];
 const wiFreqs = [174.61,185,196,207.65,220,233.08,246.94,261.63,277.18,293.66,311.13,329.63,
                  349.23,370,392,415.30,440,466.16,493.88,523.25,554.37,587.33,622.25,659.25];
-const wiIntervalsEs = {1:'semitono',2:'tono',3:'3ª menor — oscuro',4:'3ª mayor — brillante',
+const wiIntervalsEs = { 1:'semitono',2:'tono',3:'3ª menor — oscuro',4:'3ª mayor — brillante',
   5:'4ª justa',6:'tritono — máx. tensión',7:'5ª justa — estable',8:'6ª menor',
-  9:'6ª mayor',10:'7ª menor',11:'7ª mayor',12:'octava'};
-const wiIntervalsEn = {1:'semitone',2:'whole tone',3:'minor 3rd — darker',4:'major 3rd — brighter',
+  9:'6ª mayor',10:'7ª menor',11:'7ª mayor',12:'octava' };
+const wiIntervalsEn = { 1:'semitone',2:'whole tone',3:'minor 3rd — darker',4:'major 3rd — brighter',
   5:'perfect 4th',6:'tritone — max tension',7:'perfect 5th — stable',8:'minor 6th',
-  9:'major 6th',10:'minor 7th',11:'major 7th',12:'octave'};
-const wiIntervalsJa = {1:'半音',2:'全音',3:'短3度 — 暗め',4:'長3度 — 明るめ',
+  9:'major 6th',10:'minor 7th',11:'major 7th',12:'octave' };
+const wiIntervalsJa = { 1:'半音',2:'全音',3:'短3度 — 暗め',4:'長3度 — 明るめ',
   5:'完全4度',6:'トライトーン — 最大の緊張感',7:'完全5度 — 安定',
-  8:'短6度',9:'長6度',10:'短7度',11:'長7度',12:'オクターブ'};
+  8:'短6度',9:'長6度',10:'短7度',11:'長7度',12:'オクターブ' };
 let wiSel1=-1, wiSel2=-1;
 
 function wiNotes() {
@@ -178,7 +178,7 @@ function wiBuildKbd() {
   kbd.style.cssText = 'position:relative;display:flex;height:70px;';
   // 14 white keys
   const whites = [0,2,4,5,7,9,11,12,14,16,17,19,21,23];
-  const blacks = {1:[0,1],3:[2,3],6:[4,5],8:[6,7],10:[8,9],13:[12,13],15:[14,15],18:[16,17],20:[19,20],22:[21,22]};
+  const blacks = { 1:[0,1],3:[2,3],6:[4,5],8:[6,7],10:[8,9],13:[12,13],15:[14,15],18:[16,17],20:[19,20],22:[21,22] };
   kbd.innerHTML = '';
   const ww = 100/14; // % width per white key
   whites.forEach((semi,wi) => {
@@ -277,10 +277,10 @@ function waDrawAndLabel() {
 }
 function waPreset(p) {
   const presets={
-    perc:{a:1,d:80,s:0,r:30},
-    pad:{a:150,d:200,s:80,r:800},
-    pluck:{a:1,d:200,s:0,r:150},
-    swell:{a:200,d:50,s:90,r:1500}
+    perc:{ a:1,d:80,s:0,r:30 },
+    pad:{ a:150,d:200,s:80,r:800 },
+    pluck:{ a:1,d:200,s:0,r:150 },
+    swell:{ a:200,d:50,s:90,r:1500 },
   };
   const pr=presets[p]; if(!pr) return;
   document.getElementById('wa-a').value=pr.a;
@@ -309,12 +309,12 @@ document.addEventListener('DOMContentLoaded', () => { waDrawAndLabel(); });
 window.addEventListener('resize', () => { setTimeout(waDrawAndLabel, 100); });
 
 /* ── 4. STEP SEQUENCER ──────────────────────────────────── */
-let wsGrid=Array.from({length:3},()=>Array(16).fill(false));
+let wsGrid=Array.from({ length:3 },()=>Array(16).fill(false));
 let wsSeqPlaying=false, wsSeqTimer=null, wsSeqStep=0, wsSeqBpm=85;
 const wsPresets_={
   basic:[[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]],
   dilla:[[1,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0],[0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1],[0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1]],
-  house:[[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
+  house:[[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],
 };
 function wsKick(t) {
   const ctx=ac();
@@ -375,7 +375,7 @@ function wsPreset(name) {
   wsGrid=wsPresets_[name].map(r=>[...r]);
   wsRender();
 }
-function wsClear(){wsGrid=Array.from({length:3},()=>Array(16).fill(false));wsRender();}
+function wsClear(){wsGrid=Array.from({ length:3 },()=>Array(16).fill(false));wsRender();}
 function wsRender() {
   const grid=document.getElementById('ws-grid'); if(!grid) return;
   grid.innerHTML='';
@@ -401,19 +401,19 @@ const wwDescsEs={
   sine:'sine — onda sinusoidal pura, sin armónicos adicionales. suave y limpia. base del vocoder.',
   square:'square — onda cuadrada. rica en armónicos impares. carácter nasal y electrónico. new wave, chiptune.',
   sawtooth:'sawtooth — diente de sierra. todos los armónicos. brillante y agresiva. el sonido substractivo más rico.',
-  triangle:'triangle — similar a sine pero con armónicos impares suaves. más cálida que square.'
+  triangle:'triangle — similar a sine pero con armónicos impares suaves. más cálida que square.',
 };
 const wwDescsEn={
   sine:'sine — pure sine wave, no extra harmonics. smooth and clean. vocoder base.',
   square:'square — square wave. rich in odd harmonics. nasal/electronic character. new wave, chiptune.',
   sawtooth:'sawtooth — all harmonics. bright and aggressive. richest subtractive source.',
-  triangle:'triangle — like sine with soft odd harmonics. warmer than square.'
+  triangle:'triangle — like sine with soft odd harmonics. warmer than square.',
 };
 const wwDescsJa={
   sine:'sine — 純粋な正弦波。追加の倍音なし。滑らかでクリーン。vocoderの土台。',
   square:'square — 矩形波。奇数倍音が豊富。鼻にかかった電子的キャラクター。new wave / chiptune向け。',
   sawtooth:'sawtooth — すべての倍音を含む。明るくアグレッシブ。減算合成で最も濃い素材。',
-  triangle:'triangle — sineに近いが、穏やかな奇数倍音を持つ。squareより温かい。'
+  triangle:'triangle — sineに近いが、穏やかな奇数倍音を持つ。squareより温かい。',
 };
 function wwDraw() {
   if(!wwAnalyser) return;
@@ -492,10 +492,10 @@ document.addEventListener('DOMContentLoaded', () => { setTimeout(wwDrawStatic,10
 
 /* ── 6. STEREO FIELD ────────────────────────────────────── */
 const ws2Config={
-  kick:{freq:80,type:'sine',color:'#111110',pan:0,osc:null,gain:null},
-  bajo:{freq:110,type:'triangle',color:'#0055cc',pan:0,osc:null,gain:null},
-  tex:{freq:440,type:'sawtooth',color:'#00aa55',pan:0.6,osc:null,gain:null},
-  mel:{freq:330,type:'triangle',color:'#ff5500',pan:-0.2,osc:null,gain:null}
+  kick:{ freq:80,type:'sine',color:'#111110',pan:0,osc:null,gain:null },
+  bajo:{ freq:110,type:'triangle',color:'#0055cc',pan:0,osc:null,gain:null },
+  tex:{ freq:440,type:'sawtooth',color:'#00aa55',pan:0.6,osc:null,gain:null },
+  mel:{ freq:330,type:'triangle',color:'#ff5500',pan:-0.2,osc:null,gain:null },
 };
 let ws2Playing=false;
 function ws2MakeDraggable(dotId, key) {
@@ -504,9 +504,9 @@ function ws2MakeDraggable(dotId, key) {
   if(!dot||!field) return;
   let dragging=false, ox=0, oy=0;
   dot.addEventListener('mousedown', e=>{dragging=true; ox=e.clientX-dot.offsetLeft; oy=e.clientY-dot.offsetTop; e.preventDefault();});
-  dot.addEventListener('touchstart', e=>{dragging=true; const t=e.touches[0]; ox=t.clientX-dot.offsetLeft; oy=t.clientY-dot.offsetTop; e.preventDefault();},{passive:false});
+  dot.addEventListener('touchstart', e=>{dragging=true; const t=e.touches[0]; ox=t.clientX-dot.offsetLeft; oy=t.clientY-dot.offsetTop; e.preventDefault();},{ passive:false });
   document.addEventListener('mousemove', e=>{if(!dragging) return; ws2Move(dot, e.clientX-ox, e.clientY-oy, field, key);});
-  document.addEventListener('touchmove', e=>{if(!dragging) return; const t=e.touches[0]; ws2Move(dot,t.clientX-ox,t.clientY-oy,field,key); e.preventDefault();},{passive:false});
+  document.addEventListener('touchmove', e=>{if(!dragging) return; const t=e.touches[0]; ws2Move(dot,t.clientX-ox,t.clientY-oy,field,key); e.preventDefault();},{ passive:false });
   document.addEventListener('mouseup', ()=>dragging=false);
   document.addEventListener('touchend', ()=>dragging=false);
 }
@@ -525,12 +525,12 @@ function ws2Toggle() {
   if(!ws2Playing){
     const ctx=ac();
     const instruments=[
-      {key:'kick',freq:80,type:'sine',vol:0.25},
-      {key:'bajo',freq:110,type:'triangle',vol:0.2},
-      {key:'tex',freq:330,type:'sawtooth',vol:0.08},
-      {key:'mel',freq:220,type:'triangle',vol:0.15}
+      { key:'kick',freq:80,type:'sine',vol:0.25 },
+      { key:'bajo',freq:110,type:'triangle',vol:0.2 },
+      { key:'tex',freq:330,type:'sawtooth',vol:0.08 },
+      { key:'mel',freq:220,type:'triangle',vol:0.15 },
     ];
-    instruments.forEach(({key,freq,type,vol})=>{
+    instruments.forEach(({ key,freq,type,vol })=>{
       const o=ctx.createOscillator(); o.frequency.value=freq; o.type=type;
       const g=ctx.createGain(); g.gain.value=vol;
       const p=ctx.createStereoPanner(); p.pan.value=ws2Config[key].pan;
@@ -548,7 +548,7 @@ function ws2Reset() {
   const field=document.getElementById('ws2-field'); if(!field) return;
   const fw=field.clientWidth, fh=field.clientHeight;
   if(fw<40 || fh<40) return false;
-  const defaults={kick:{x:fw/2,y:fh*0.25},bajo:{x:fw/2,y:fh*0.5},tex:{x:fw*0.75,y:fh*0.35},mel:{x:fw*0.35,y:fh*0.65}};
+  const defaults={ kick:{ x:fw/2,y:fh*0.25 },bajo:{ x:fw/2,y:fh*0.5 },tex:{ x:fw*0.75,y:fh*0.35 },mel:{ x:fw*0.35,y:fh*0.65 } };
   Object.entries(defaults).forEach(([key,pos])=>{
     const dot=document.getElementById('ws2-'+key); if(!dot) return;
     dot.style.left=pos.x+'px'; dot.style.top=pos.y+'px';
@@ -569,8 +569,8 @@ let wtHeadPos = 0;
 let wtTrackIdx = 0;
 let wtClipboard = false;
 function wtSeed() {
-  wtData = Array.from({length:4}, (_,t)=>
-    Array.from({length:16}, (_,i)=> (t===0 && [0,1,2,4,5,8].includes(i)) || (t===1 && [0,4,8,12].includes(i)) || (t===2 && [2,6,10,14].includes(i)) || (t===3 && [7,11,15].includes(i)))
+  wtData = Array.from({ length:4 }, (_,t)=>
+    Array.from({ length:16 }, (_,i)=> (t===0 && [0,1,2,4,5,8].includes(i)) || (t===1 && [0,4,8,12].includes(i)) || (t===2 && [2,6,10,14].includes(i)) || (t===3 && [7,11,15].includes(i))),
   );
   wtClipboard = false;
   wtHeadPos = 0;
@@ -666,7 +666,7 @@ function wfmGet() {
     ratio: +document.getElementById('wfm-ratio').value/10,
     mod: +document.getElementById('wfm-mod').value,
     fb: +document.getElementById('wfm-fb').value,
-    origin: originEl ? +originEl.value : 50
+    origin: originEl ? +originEl.value : 50,
   };
 }
 function wfmOriginFreq(origin){
@@ -714,9 +714,9 @@ function wfmTone(p, when=0){
 function wfmPlay(){ wfmTone(wfmGet(),0); }
 function wfmPreset(name){
   const p = {
-    clean:{ratio:20,origin:50,mod:20,fb:10},
-    metal:{ratio:47,origin:58,mod:55,fb:20},
-    rough:{ratio:31,origin:45,mod:80,fb:70}
+    clean:{ ratio:20,origin:50,mod:20,fb:10 },
+    metal:{ ratio:47,origin:58,mod:55,fb:20 },
+    rough:{ ratio:31,origin:45,mod:80,fb:70 },
   }[name];
   if(!p) return;
   document.getElementById('wfm-ratio').value=String(p.ratio);
@@ -731,7 +731,7 @@ function wfmStore(slot){
   if(slot==='b') wfmB = wfmGet();
   document.getElementById('wfm-note').textContent = tr(
     `guardado ${slot.toUpperCase()} · usa A/B para comparar en contexto`,
-    `saved ${slot.toUpperCase()} · use A/B to compare in context`
+    `saved ${slot.toUpperCase()} · use A/B to compare in context`,
   );
 }
 function wfmPlayAB(){
@@ -773,7 +773,7 @@ function wlfoShape(type){
     if(!b) return;
     b.className='w-btn inactive';
   });
-  const map={sine:'wlfo-sine',triangle:'wlfo-tri',square:'wlfo-square',random:'wlfo-rand'};
+  const map={ sine:'wlfo-sine',triangle:'wlfo-tri',square:'wlfo-square',random:'wlfo-rand' };
   const el=document.getElementById(map[type]); if(el) el.className='w-btn active';
   wlfoUpdate();
 }
@@ -906,7 +906,7 @@ function wfxVoice(type, when=0){
   o.start(t); o.stop(t+0.72);
 }
 function wfxPlay(slot){
-  const idx = {a:0,b:1,c:2}[slot];
+  const idx = { a:0,b:1,c:2 }[slot];
   if(idx===undefined) return;
   wfxVoice(wfxMap[idx],0);
   document.getElementById('wfx-note').textContent=tr('escuchando ','listening to ')+slot.toUpperCase()+tr(' · compara por función, no por volumen',' · compare by function, not by volume');
@@ -919,7 +919,7 @@ function wfxReveal(){
 function wslRead(side){
   return {
     engine: document.getElementById('wsl-eng-'+side).value,
-    seq: document.getElementById('wsl-seq-'+side).value
+    seq: document.getElementById('wsl-seq-'+side).value,
   };
 }
 function wslVoice(engine, freq, t, dur=0.16){
@@ -1016,18 +1016,18 @@ function wrsExercises(){
     ? [
       'exercise 1: resample an internal 8-bar texture and turn it into a playable pad.',
       'exercise 2: record 5-10 s from line/mic and use it as a percussive element.',
-      'exercise 3: take one tape layer and recycle it into new material for 4 bars.'
+      'exercise 3: take one tape layer and recycle it into new material for 4 bars.',
     ]
     : (lang === 'ja'
       ? [
         '演習1: 8小節の内部テクスチャをresampleし、演奏できるpadに変換する。',
         '演習2: line/micから5〜10秒録音し、パーカッシブ要素として使う。',
-        '演習3: Tapeの1レイヤーを新しい4小節素材に再利用する。'
+        '演習3: Tapeの1レイヤーを新しい4小節素材に再利用する。',
       ]
       : [
         'ejercicio 1: resamplea una textura interna de 8 compases y conviértela en pad tocable.',
         'ejercicio 2: graba 5-10 s por line/mic y úsalo como elemento percusivo.',
-        'ejercicio 3: toma una capa del tape y recíclala en material nuevo para 4 compases.'
+        'ejercicio 3: toma una capa del tape y recíclala en material nuevo para 4 compases.',
       ]);
   document.getElementById('wrs-plan').innerHTML += '<br><br><strong style="color:var(--ink)">'+ex[Math.floor(Math.random()*ex.length)]+'</strong>';
 }
@@ -1072,7 +1072,7 @@ function wexUpdate(){
     tails:tr('colas de reverb','reverb tails'),
     trans:tr('transiciones','transitions'),
     gaps:tr('huecos','gaps'),
-    bass:tr('bajo','bass')
+    bass:tr('bajo','bass'),
   };
   const missTxt=missing.length?(tr('pendiente: ','pending: ')+missing.map(m=>missMap[m]).join(', ')):tr('checklist completo.','checklist complete.');
   document.getElementById('wex-result').innerHTML =
@@ -1085,68 +1085,68 @@ const wanData = {
     synth: {
       title: 'Synth — T1/T2/T3/T4 = engine/envelope/FX/LFO',
       body: 'Ochre/Blue/Gray controlan el engine activo. Orange ajusta volumen del instrumento. Shift en encoders abre ADSR.',
-      tip: 'acción: toca una nota fija y gira un encoder por vez para aislar causa-efecto.'
+      tip: 'acción: toca una nota fija y gira un encoder por vez para aislar causa-efecto.',
     },
     drum: {
       title: 'Drum — slots de sample y edición rápida',
       body: 'Ochre y Blue ajustan start/end. Gray afina el sample. Orange controla volumen del instrumento activo.',
-      tip: 'acción: en un solo slot, mueve start/end y decide si el sample funciona mejor corto o largo.'
+      tip: 'acción: en un solo slot, mueve start/end y decide si el sample funciona mejor corto o largo.',
     },
     tape: {
       title: 'Tape — grabar, navegar, editar takes',
       body: 'Blue hace scrubbing del cabezal. 1–4 seleccionan pista activa. Lift/Drop/Split editan material en la cinta.',
-      tip: 'acción: haz lift de un take corto, mueve cabezal y haz drop para validar el flujo.'
+      tip: 'acción: haz lift de un take corto, mueve cabezal y haz drop para validar el flujo.',
     },
     mixer: {
       title: 'Mixer — jerarquía y espacio',
       body: 'Ochre volumen de pista, Blue paneo, Gray send, Orange master. Shift abre controles globales del bus.',
-      tip: 'acción: baja una pista de fondo 3–5 puntos y comprueba si el foco principal se entiende mejor.'
-    }
+      tip: 'acción: baja una pista de fondo 3–5 puntos y comprueba si el foco principal se entiende mejor.',
+    },
   },
   en: {
     synth: {
       title: 'Synth — T1/T2/T3/T4 = engine/envelope/FX/LFO',
       body: 'Ochre/Blue/Gray control the active engine. Orange sets instrument volume. Shift on encoders opens ADSR.',
-      tip: 'action: hold one note and move one encoder at a time to isolate cause/effect.'
+      tip: 'action: hold one note and move one encoder at a time to isolate cause/effect.',
     },
     drum: {
       title: 'Drum — sample slots and fast edit',
       body: 'Ochre and Blue adjust start/end. Gray tunes the sample. Orange controls active instrument volume.',
-      tip: 'action: on one slot, move start/end and decide whether the sample works better short or long.'
+      tip: 'action: on one slot, move start/end and decide whether the sample works better short or long.',
     },
     tape: {
       title: 'Tape — record, navigate, edit takes',
       body: 'Blue scrubs the head. 1–4 select active track. Lift/Drop/Split edit material on tape.',
-      tip: 'action: lift one short take, move the head, and drop it to validate the full edit flow.'
+      tip: 'action: lift one short take, move the head, and drop it to validate the full edit flow.',
     },
     mixer: {
       title: 'Mixer — hierarchy and space',
       body: 'Ochre track volume, Blue pan, Gray send, Orange master. Shift opens global bus controls.',
-      tip: 'action: lower one background layer by 3–5 points and check if the main focus reads better.'
-    }
+      tip: 'action: lower one background layer by 3–5 points and check if the main focus reads better.',
+    },
   },
   ja: {
     synth: {
       title: 'Synth — T1/T2/T3/T4 = engine/envelope/FX/LFO',
       body: 'Ochre/Blue/Grayは現在のengineを操作。Orangeはinstrument volume。encoder上のShiftでADSRを開く。',
-      tip: 'アクション: 1音を固定して、encoderを1つずつ動かし因果を確認。'
+      tip: 'アクション: 1音を固定して、encoderを1つずつ動かし因果を確認。',
     },
     drum: {
       title: 'Drum — sampleスロットと高速編集',
       body: 'OchreとBlueでstart/end。Grayでsampleのピッチ調整。Orangeで現在instrumentのvolume。',
-      tip: 'アクション: 1スロットだけでstart/endを動かし、短い/長いどちらが機能するか判断。'
+      tip: 'アクション: 1スロットだけでstart/endを動かし、短い/長いどちらが機能するか判断。',
     },
     tape: {
       title: 'Tape — 録音・移動・take編集',
       body: 'Blueでヘッドをscrub。1–4でアクティブtrack選択。Lift/Drop/SplitでTape素材を編集。',
-      tip: 'アクション: 短いtakeをliftし、ヘッドを動かしてdropして編集フローを確認。'
+      tip: 'アクション: 短いtakeをliftし、ヘッドを動かしてdropして編集フローを確認。',
     },
     mixer: {
       title: 'Mixer — 階層と空間',
       body: 'Ochreはtrack volume、Blueはpan、Grayはsend、Orangeはmaster。Shiftでbus全体の操作。',
-      tip: 'アクション: 背景レイヤーを3–5下げて、主役が前に出るか確認。'
-    }
-  }
+      tip: 'アクション: 背景レイヤーを3–5下げて、主役が前に出るか確認。',
+    },
+  },
 };
 function wanSet(mode){
   const lang = widgetLang();
@@ -1175,7 +1175,7 @@ function wwfPhase(min){
     [35,50, tr('melodía (35–50): motivo claro, no sobreescribir.','melody (35–50): clear motif, avoid overfilling.')],
     [50,65, tr('textura (50–65): movimiento sin tapar foco.','texture (50–65): movement without masking focus.')],
     [65,80, tr('mezcla (65–80): jerarquía y espacio estéreo.','mix (65–80): hierarchy and stereo space.')],
-    [80,91, tr('export (80–90): decide ruta y cierra versión.','export (80–90): pick route and close version.')]
+    [80,91, tr('export (80–90): decide ruta y cierra versión.','export (80–90): pick route and close version.')],
   ];
   return phases.find(([a,b])=>min>=a&&min<b)?.[2] || phases[0][2];
 }
@@ -1210,7 +1210,7 @@ function wcmUpdate(){
   const devices = +dev.value;
   const devLbl = document.getElementById('wcm-devv');
   if(devLbl) devLbl.textContent = String(devices);
-  let score = ({usb_host:1, pulse:2, ble:3}[path.value] || 2);
+  let score = ({ usb_host:1, pulse:2, ble:3 }[path.value] || 2);
   if(goal.value==='record') score += (path.value==='ble'?2:path.value==='pulse'?1:0);
   if(goal.value==='live') score += (path.value==='ble'?1:0);
   if(devices>=3) score += 1;
@@ -1245,13 +1245,13 @@ function wpfUpdate(){
     ['wpf-level', tr('nivel de salida estable','output level stable')],
     ['wpf-sync', tr('sync validado','sync validated')],
     ['wpf-lat', tr('latencia aceptable','latency acceptable')],
-    ['wpf-fallback', tr('fallback cableado listo','wired fallback ready')]
+    ['wpf-fallback', tr('fallback cableado listo','wired fallback ready')],
   ];
   const done = checks.filter(([id])=>document.getElementById(id)?.checked);
   const missing = checks.filter(([id])=>!document.getElementById(id)?.checked).map(([,label])=>label);
   let msg = tr(
     `checklist: ${done.length}/5. Pendiente: ${missing.join(', ') || 'nada'}.`,
-    `checklist: ${done.length}/5. Pending: ${missing.join(', ') || 'none'}.`
+    `checklist: ${done.length}/5. Pending: ${missing.join(', ') || 'none'}.`,
   );
   if(done.length===5){
     msg = mode.value==='capture'
