@@ -6,8 +6,8 @@ window.CourseLocales.es = {
       title: 'OP-1 Field / curso',
     },
     header: {
-      subtitle: 'curso personalizado',
-      title: 'electrónica experimental · sin teoría previa',
+      subtitle: 'guía práctica',
+      title: 'beatmaking y síntesis · desde cero',
       tags: {
         modules: 'módulos',
         practice: 'práctica',

@@ -6,8 +6,8 @@ window.CourseLocales.en = {
       "title": "OP-1 Field / course"
     },
     "header": {
-      "subtitle": "custom course",
-      "title": "experimental electronic music · zero theory required",
+      "subtitle": "practical guide",
+      "title": "beatmaking and synthesis · from zero",
       "tags": {
         "modules": "modules",
         "practice": "practice"

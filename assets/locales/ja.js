@@ -6,8 +6,8 @@ window.CourseLocales.ja = {
       "title": "OP-1 Field / course"
     },
     "header": {
-      "subtitle": "カスタムコース",
-      "title": "実験的エレクトロニックミュージック · 理論ゼロから",
+      "subtitle": "practical guide",
+      "title": "beatmaking and synthesis · from zero",
       "tags": {
         "modules": "モジュール",
         "practice": "practice"
