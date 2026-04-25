@@ -1,150 +1,65 @@
 # OP-1 Field Learning App
 
-An offline-first desktop learning app built around a practical OP-1 Field course.
+Practical, offline-first course app for OP-1 Field users.
 
-This started as a long HTML manual. It is now packaged like a product app with onboarding, persistent progress, core/full learning paths, search, bookmarks, and study modes.
+Built from a long manual and turned into a desktop app focused on learning by doing: short explanations, immediate exercises, interactive blocks, and a real workflow from first notes to export.
 
-## What is inside
+![OP-1 Field Learning App preview](docs/preview.png)
 
-- 16 course modules (original content preserved)
-- Sidebar + subnavigation + progress tracking
-- Interactive learning widgets
-- Onboarding start screen
-- Resume where you left off
-- Core track and full track modes
+## What you get
+
+- 16 learning modules (theory + hands-on production)
+- Core path and full path
 - Practice mode and reading mode
-- Offline local persistence (localStorage)
+- Search, bookmarks, and progress tracking
+- Language switch (ES / EN / JA)
+- Works fully offline (local persistence)
 
-## Install dependencies
+## Quick start
 
 ```bash
 npm install
-```
-
-## Run in development
-
-```bash
 npm run dev
 ```
 
-## Run app (same as dev)
+## Main scripts
 
 ```bash
+# Run app
+npm run dev
 npm start
-```
 
-## QA checks
-
-Run stylistic ESLint checks:
-
-```bash
-npm run lint
-```
-
-Auto-fix stylistic issues:
-
-```bash
-npm run lint:fix
-```
-
-Run locale + structure checks:
-
-```bash
+# Quality checks
 npm run qa
-```
-
-Run content coherence QA only:
-
-```bash
-npm run qa:content
-```
-
-Run E2E tests:
-
-```bash
+npm run lint
 npm run test:e2e
-```
 
-Run full QA locally:
-
-```bash
-npm run qa:full
-```
-
-## Package desktop builds
-
-Build all configured targets:
-
-```bash
+# Build desktop installers
 npm run dist
-```
-
-Build Windows installer (NSIS) first:
-
-```bash
 npm run dist:win
+npm run dist:mac
 ```
 
-## Where the installer appears
+Build outputs are generated in `dist/`.
 
-Generated files are written to:
+## Project snapshot
 
-- `dist/`
+- `index.html` + `assets/*` = app UI + course content
+- `main.js` = Electron entry
+- `assets/locales/*.js` = language content
+- `docs/EDITING_GUIDE.md` = content editing notes
+- `CONTRIBUTING.md` = contribution guide
 
-For Windows target, the `.exe` installer is produced there.
+## Contributing
 
-## App structure
+PRs and fixes are welcome, especially:
 
-- `main.js` — Electron main process and window boot
-- `package.json` — scripts + electron-builder config
-- `index.html` — app shell + course content
-- `assets/css/main.css` — styles (visual identity preserved)
-- `assets/js/state.js` — persistence layer
-- `assets/js/i18n.js` — translation engine (`data-i18n` + language switching)
-- `assets/js/core.js` — course navigation/progress/core-full logic
-- `assets/js/app-shell.js` — onboarding and product UI controls
-- `assets/js/widgets.js` — interactive audio/learning widgets
-- `assets/locales/es.js` — Spanish locale dictionary
-- `assets/locales/en.js` — English locale dictionary
-- `assets/locales/ja.js` — Japanese locale dictionary
-- `docs/EDITING_GUIDE.md` — contributor editing workflow
-- `CONTRIBUTING.md` — contributor process and guardrails
-- `STYLE_GUIDE.md` — editorial consistency rules
+- content clarity
+- OP-1 Field accuracy
+- language improvements
+- new practical exercises
 
-## Internationalization (i18n)
-
-The app is now structured to translate without rewriting core logic:
-
-- UI text is mapped with `data-i18n`, `data-i18n-placeholder`, etc.
-- Locale dictionaries live in `assets/locales/*.js`.
-- `assets/js/i18n.js` handles fallback (active locale -> `es` base -> source text).
-- Optional full module overrides are supported via `course.modules.<moduleId>` HTML strings.
-- Language is persisted in `localStorage` (`manual_lang`).
-- Current coverage:
-- Spanish (`assets/locales/es.js`): 16/16 modules (`m0..m15`)
-- English (`assets/locales/en.js`): 16/16 modules (`m0..m15`)
-- Japanese (`assets/locales/ja.js`): 16/16 modules (`m0..m15`)
-
-To add a new language:
-
-1. Create `assets/locales/<lang>.js` based on `assets/locales/en.js` (same key tree).
-2. Register the dictionary in `window.CourseLocales.<lang>`.
-3. Add a language button in the header (`data-lang="<lang>"`).
-4. Translate UI keys first, then `course.modules.m0..m15`.
-5. Keep HTML markup inside module strings untouched (ids, anchors, onclick handlers, classes) to avoid breaking widgets/navigation.
-
-## Contribution flow
-
-1. Read [`CONTRIBUTING.md`](/Users/axelsearagomez/Downloads/op-1field/CONTRIBUTING.md).
-2. Follow [`STYLE_GUIDE.md`](/Users/axelsearagomez/Downloads/op-1field/STYLE_GUIDE.md) for didactic/editorial consistency.
-3. Run `npm run qa` before opening a PR.
-4. Use the PR template checklist in `.github/pull_request_template.md`.
-
-## Notes
-
-- Original course content is preserved.
-- No cloud backend is required.
-- Works offline after install.
+Run `npm run qa` before opening a PR.
 
 ---
 
