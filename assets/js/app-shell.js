@@ -42,6 +42,35 @@
     onb.classList.toggle('hidden', !show);
   }
 
+  function bindSettingsPanel() {
+    const toggle = byId('settings-toggle');
+    const panel = byId('settings-panel');
+    if (!toggle || !panel) return;
+
+    const setOpen = (open) => {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+
+    setOpen(false);
+
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      setOpen(panel.hidden);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (panel.hidden) return;
+      const target = e.target;
+      if (target instanceof Node && (panel.contains(target) || toggle.contains(target))) return;
+      setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) setOpen(false);
+    });
+  }
+
   function bindControls() {
     const app = window.CourseApp;
     if (!app) return;
@@ -124,6 +153,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     bindControls();
+    bindSettingsPanel();
     syncUi();
     setupOnboarding();
   });

@@ -6,7 +6,7 @@ window.CourseLocales.ja = {
       "title": "OP-1 Field / course"
     },
     "header": {
-      "subtitle": "カスタムコース",
+      "subtitle": "guía práctica",
       "title": "実験的電子音楽・ゼロ理論必須",
       "tags": {
         "modules": "モジュール",
@@ -19,6 +19,12 @@ window.CourseLocales.ja = {
     },
     "lang": {
       "label": "ラング"
+    },
+    "settings": {
+      "button": "設定",
+      "title": "設定",
+      "viewLabel": "表示モード",
+      "firmware": "このガイドは OP-1 Field firmware 1.6.5 向けです"
     }
   },
   "onboarding": {

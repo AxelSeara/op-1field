@@ -13,8 +13,14 @@ async function openFreshCourse(page) {
   await expect(page.locator('#onboarding')).toHaveClass(/hidden/);
 }
 
+async function openSettings(page) {
+  await page.click('#settings-toggle');
+  await expect(page.locator('#settings-panel')).toBeVisible();
+}
+
 test('language switch updates sidebar and module content', async ({ page }) => {
   await openFreshCourse(page);
+  await openSettings(page);
 
   await expect(page.locator('#m0 .ey').first()).toContainText('módulo 00');
 
@@ -55,6 +61,7 @@ test('core UX controls: progress, bookmarks, filters, tracks, view modes', async
   await page.click('#track-full-btn');
   await expect(page.locator('.ni[data-index="1"]')).not.toHaveClass(/hidden-by-filter/);
 
+  await openSettings(page);
   await page.click('#mode-practice');
   await expect(page.locator('body')).toHaveClass(/view-practice/);
 
@@ -67,6 +74,7 @@ test('core UX controls: progress, bookmarks, filters, tracks, view modes', async
 
 test('resume state after reload keeps language and current module', async ({ page }) => {
   await openFreshCourse(page);
+  await openSettings(page);
 
   await page.click('.lang-btn[data-lang="en"]');
   await page.click('.ni[data-index="5"]');

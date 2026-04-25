@@ -6,7 +6,7 @@ window.CourseLocales.en = {
       "title": "OP-1 Field / course"
     },
     "header": {
-      "subtitle": "practical guide",
+      "subtitle": "遊んで、間違えて、作ろう。",
       "title": "beatmaking and synthesis · from zero",
       "tags": {
         "modules": "modules",
@@ -19,6 +19,12 @@ window.CourseLocales.en = {
     },
     "lang": {
       "label": "lang"
+    },
+    "settings": {
+      "button": "settings",
+      "title": "settings",
+      "viewLabel": "view mode",
+      "firmware": "guide for OP-1 Field firmware 1.6.5"
     }
   },
   "onboarding": {

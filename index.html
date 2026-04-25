@@ -15,20 +15,25 @@
     <div class="hsub" data-i18n="app.header.subtitle">curso personalizado</div>
   </div>
   <div class="hinfo">
-    <div class="htitle" data-i18n="app.header.title">electrónica experimental · sin teoría previa</div>
-    <div class="htags">
-      <div class="htag"><span data-i18n="app.header.tags.modules">módulos</span> <span>16</span></div>
-      <div class="htag"><span data-i18n="app.header.tags.practice">práctica</span> <span>~33h</span></div>
-    </div>
-    <div class="hmode" aria-label="view mode">
-      <button class="mode-btn" id="mode-practice" type="button" data-i18n="app.modes.practice">practice</button>
-      <button class="mode-btn" id="mode-reading" type="button" data-i18n="app.modes.reading">reading</button>
-    </div>
-    <div class="hlang" aria-label="language switch">
-      <span class="hlang-lb" data-i18n="app.lang.label">lang</span>
-      <button class="lang-btn" data-lang="es" type="button" translate="no" onclick="setManualLanguage('es')">ES</button>
-      <button class="lang-btn" data-lang="en" type="button" translate="no" onclick="setManualLanguage('en')">EN</button>
-      <button class="lang-btn" data-lang="ja" type="button" translate="no" onclick="setManualLanguage('ja')">JA</button>
+    <button class="settings-btn" id="settings-toggle" type="button" aria-haspopup="true" aria-expanded="false" data-i18n="app.settings.button">ajustes</button>
+    <div class="settings-panel" id="settings-panel" hidden>
+      <div class="settings-ti" data-i18n="app.settings.title">ajustes</div>
+      <div class="settings-group">
+        <div class="settings-lb" data-i18n="app.settings.viewLabel">modo de lectura</div>
+        <div class="hmode" aria-label="view mode">
+          <button class="mode-btn" id="mode-practice" type="button" data-i18n="app.modes.practice">practice</button>
+          <button class="mode-btn" id="mode-reading" type="button" data-i18n="app.modes.reading">reading</button>
+        </div>
+      </div>
+      <div class="settings-group">
+        <div class="hlang" aria-label="language switch">
+          <span class="hlang-lb" data-i18n="app.lang.label">lang</span>
+          <button class="lang-btn" data-lang="es" type="button" translate="no" onclick="setManualLanguage('es')">ES</button>
+          <button class="lang-btn" data-lang="en" type="button" translate="no" onclick="setManualLanguage('en')">EN</button>
+          <button class="lang-btn" data-lang="ja" type="button" translate="no" onclick="setManualLanguage('ja')">JA</button>
+        </div>
+      </div>
+      <div class="settings-note" data-i18n="app.settings.firmware">guía para OP-1 Field firmware 1.6.5</div>
     </div>
   </div>
 </div>

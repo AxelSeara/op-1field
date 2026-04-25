@@ -6,7 +6,7 @@ window.CourseLocales.es = {
       title: 'OP-1 Field / curso',
     },
     header: {
-      subtitle: 'guía práctica',
+      subtitle: '遊んで、間違えて、作ろう。',
       title: 'beatmaking y síntesis · desde cero',
       tags: {
         modules: 'módulos',
@@ -19,6 +19,12 @@ window.CourseLocales.es = {
     },
     lang: {
       label: 'idioma',
+    },
+    settings: {
+      button: 'ajustes',
+      title: 'ajustes',
+      viewLabel: 'modo de lectura',
+      firmware: 'guía para OP-1 Field firmware 1.6.5',
     },
   },
   onboarding: {
