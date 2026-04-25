@@ -68,6 +68,7 @@ For Windows target, the `.exe` installer is produced there.
 - `assets/js/widgets.js` — interactive audio/learning widgets
 - `assets/locales/es.js` — Spanish locale dictionary
 - `assets/locales/en.js` — English locale dictionary
+- `assets/locales/ja.js` — Japanese locale dictionary
 - `docs/EDITING_GUIDE.md` — contributor editing workflow
 
 ## Internationalization (i18n)
@@ -76,12 +77,13 @@ The app is now structured to translate without rewriting core logic:
 
 - UI text is mapped with `data-i18n`, `data-i18n-placeholder`, etc.
 - Locale dictionaries live in `assets/locales/*.js`.
-- `assets/js/i18n.js` handles fallback (`en` -> `es` -> source text).
+- `assets/js/i18n.js` handles fallback (active locale -> `es` base -> source text).
 - Optional full module overrides are supported via `course.modules.<moduleId>` HTML strings.
 - Language is persisted in `localStorage` (`manual_lang`).
 - Current coverage:
 - Spanish (`assets/locales/es.js`): 16/16 modules (`m0..m15`)
 - English (`assets/locales/en.js`): 16/16 modules (`m0..m15`)
+- Japanese (`assets/locales/ja.js`): 16/16 modules (`m0..m15`)
 
 To add a new language:
 

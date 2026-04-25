@@ -14,11 +14,21 @@ function widgetLang() {
   const lang = window.CourseI18n && typeof window.CourseI18n.getLanguage === 'function'
     ? window.CourseI18n.getLanguage()
     : (document.documentElement.getAttribute('lang') || 'es');
-  return String(lang).toLowerCase().startsWith('en') ? 'en' : 'es';
+  const v = String(lang).toLowerCase();
+  if (v.startsWith('en')) return 'en';
+  if (v.startsWith('ja')) return 'ja';
+  return 'es';
 }
 
-function tr(es, en) {
-  return widgetLang() === 'en' ? en : es;
+function tr(es, en, ja) {
+  const lang = widgetLang();
+  if (typeof es === 'object' && es) {
+    if (lang === 'ja' && typeof es.ja === 'string') return es.ja;
+    if (lang === 'en' && typeof es.en === 'string') return es.en;
+    return typeof es.es === 'string' ? es.es : (es.en || es.ja || '');
+  }
+  if (lang === 'ja') return ja !== undefined ? ja : en;
+  return lang === 'en' ? en : es;
 }
 
 /* ── 1. METRONOMO ───────────────────────────────────────── */
@@ -40,12 +50,23 @@ const wmGenresEn = [
   [130,145,'techno · trance'],
   [145,200,'drum & bass · footwork']
 ];
+const wmGenresJa = [
+  [40,60,'ドローン · 極端にアンビエント'],
+  [60,80,'スロウなヒップホップ · lo-fi · trap'],
+  [80,100,'ミッドテンポのヒップホップ · 実験系'],
+  [100,115,'ファンク · ソウル · ミッドテンポ・ポップ'],
+  [115,130,'house · disco'],
+  [130,145,'techno · trance'],
+  [145,200,'drum & bass · footwork']
+];
 let wmBpm=85, wmSwingAmt=0, wmPlaying=false, wmTimer=null, wmBeat=0, wmNextTime=0;
 
 function wmUpdate() {
   wmBpm = +document.getElementById('wm-bpm').value;
   document.getElementById('wm-bpmv').textContent = wmBpm;
-  const wmGenres = widgetLang() === 'en' ? wmGenresEn : wmGenresEs;
+  const wmGenres = widgetLang() === 'en'
+    ? wmGenresEn
+    : (widgetLang() === 'ja' ? wmGenresJa : wmGenresEs);
   const g = wmGenres.find(([lo,hi]) => wmBpm >= lo && wmBpm < hi);
   document.getElementById('wm-genre').textContent = g ? g[2] : '';
 }
@@ -121,6 +142,8 @@ const wiNotesEs = ['Fa','Fa#','Sol','Sol#','La','La#','Si','Do','Do#','Re','Re#'
                    'Fa','Fa#','Sol','Sol#','La','La#','Si','Do','Do#','Re','Re#','Mi'];
 const wiNotesEn = ['F','F#','G','G#','A','A#','B','C','C#','D','D#','E',
                    'F','F#','G','G#','A','A#','B','C','C#','D','D#','E'];
+const wiNotesJa = ['ファ','ファ#','ソ','ソ#','ラ','ラ#','シ','ド','ド#','レ','レ#','ミ',
+                   'ファ','ファ#','ソ','ソ#','ラ','ラ#','シ','ド','ド#','レ','レ#','ミ'];
 // black key positions by semitone index (0=Fa)
 const wiIsBlack = [false,true,false,true,false,false,true,false,true,false,true,false];
 const wiFreqs = [174.61,185,196,207.65,220,233.08,246.94,261.63,277.18,293.66,311.13,329.63,
@@ -131,14 +154,21 @@ const wiIntervalsEs = {1:'semitono',2:'tono',3:'3ª menor — oscuro',4:'3ª may
 const wiIntervalsEn = {1:'semitone',2:'whole tone',3:'minor 3rd — darker',4:'major 3rd — brighter',
   5:'perfect 4th',6:'tritone — max tension',7:'perfect 5th — stable',8:'minor 6th',
   9:'major 6th',10:'minor 7th',11:'major 7th',12:'octave'};
+const wiIntervalsJa = {1:'半音',2:'全音',3:'短3度 — 暗め',4:'長3度 — 明るめ',
+  5:'完全4度',6:'トライトーン — 最大の緊張感',7:'完全5度 — 安定',
+  8:'短6度',9:'長6度',10:'短7度',11:'長7度',12:'オクターブ'};
 let wiSel1=-1, wiSel2=-1;
 
 function wiNotes() {
-  return widgetLang() === 'en' ? wiNotesEn : wiNotesEs;
+  const lang = widgetLang();
+  if (lang === 'en') return wiNotesEn;
+  if (lang === 'ja') return wiNotesJa;
+  return wiNotesEs;
 }
 
 function wiIntervalLabel(diff) {
-  const map = widgetLang() === 'en' ? wiIntervalsEn : wiIntervalsEs;
+  const lang = widgetLang();
+  const map = lang === 'en' ? wiIntervalsEn : (lang === 'ja' ? wiIntervalsJa : wiIntervalsEs);
   return map[diff] || '';
 }
 
@@ -379,6 +409,12 @@ const wwDescsEn={
   sawtooth:'sawtooth — all harmonics. bright and aggressive. richest subtractive source.',
   triangle:'triangle — like sine with soft odd harmonics. warmer than square.'
 };
+const wwDescsJa={
+  sine:'sine — 純粋な正弦波。追加の倍音なし。滑らかでクリーン。vocoderの土台。',
+  square:'square — 矩形波。奇数倍音が豊富。鼻にかかった電子的キャラクター。new wave / chiptune向け。',
+  sawtooth:'sawtooth — すべての倍音を含む。明るくアグレッシブ。減算合成で最も濃い素材。',
+  triangle:'triangle — sineに近いが、穏やかな奇数倍音を持つ。squareより温かい。'
+};
 function wwDraw() {
   if(!wwAnalyser) return;
   const cv=document.getElementById('ww-canvas'); if(!cv) return;
@@ -402,7 +438,8 @@ function wwSelect(type) {
     const btn=document.getElementById('ww-'+t);
     if(btn) btn.className='w-btn '+(t===type?'active':'inactive');
   });
-  const wwDescs = widgetLang() === 'en' ? wwDescsEn : wwDescsEs;
+  const lang = widgetLang();
+  const wwDescs = lang === 'en' ? wwDescsEn : (lang === 'ja' ? wwDescsJa : wwDescsEs);
   document.getElementById('ww-desc').textContent=wwDescs[type]||'';
   if(wwOsc) wwOsc.type=type;
   if(!wwRunning) wwDrawStatic();
@@ -947,18 +984,25 @@ function wslUpdate(){
 
 /* ── 12. INPUT / RESAMPLING MAP ───────────────────────── */
 function wrsUpdate(){
+  const lang = widgetLang();
   const src=document.getElementById('wrs-src').value;
   const goal=document.getElementById('wrs-goal').value;
   const dst=document.getElementById('wrs-dst').value;
-  const srcTxt=(widgetLang()==='en'
-    ? {mic:'internal mic',line:'line-in',tape:'internal tape mix',track:'specific track'}
-    : {mic:'mic interno',line:'line-in',tape:'mix interno del tape',track:'pista específica'})[src];
-  const goalTxt=(widgetLang()==='en'
-    ? {texture:'create texture',compact:'compact layers',reuse:'recycle material'}
-    : {texture:'crear textura',compact:'compactar capas',reuse:'reciclar material'})[goal];
-  const dstTxt=(widgetLang()==='en'
-    ? {drum:'Drum slot',synth:'new synth/sampler material',tape:'new tape track'}
-    : {drum:'slot Drum',synth:'nuevo material de synth/sampler',tape:'nueva pista de tape'})[dst];
+  const srcTxt = (lang === 'en'
+    ? { mic:'internal mic', line:'line-in', tape:'internal tape mix', track:'specific track' }
+    : (lang === 'ja'
+      ? { mic:'internal mic', line:'line-in', tape:'Tapeの内部ミックス', track:'特定トラック' }
+      : { mic:'mic interno', line:'line-in', tape:'mix interno del tape', track:'pista específica' }))[src];
+  const goalTxt = (lang === 'en'
+    ? { texture:'create texture', compact:'compact layers', reuse:'recycle material' }
+    : (lang === 'ja'
+      ? { texture:'テクスチャを作る', compact:'レイヤーを圧縮する', reuse:'素材を再利用する' }
+      : { texture:'crear textura', compact:'compactar capas', reuse:'reciclar material' }))[goal];
+  const dstTxt = (lang === 'en'
+    ? { drum:'Drum slot', synth:'new synth/sampler material', tape:'new tape track' }
+    : (lang === 'ja'
+      ? { drum:'Drumスロット', synth:'新しいsynth/sampler素材', tape:'新しいTapeトラック' }
+      : { drum:'slot Drum', synth:'nuevo material de synth/sampler', tape:'nueva pista de tape' }))[dst];
   let hint=tr('graba corto, trim al ataque y compara antes/después.','record short, trim the attack, and compare before/after.');
   if(goal==='compact') hint=tr('imprime capas que ya funcionan para liberar pistas y seguir arreglando.','print layers that already work to free tracks and keep arranging.');
   if(src==='line' || src==='mic') hint=tr('ajusta nivel de entrada antes de grabar para evitar clipping o ruido débil.','set input level before recording to avoid clipping or weak/noisy signal.');
@@ -967,17 +1011,24 @@ function wrsUpdate(){
     `<strong style="color:var(--ink)">${tr('flujo recomendado:','recommended flow:')}</strong> ${srcTxt} → ${goalTxt} → ${dstTxt}.<br>${hint}`;
 }
 function wrsExercises(){
-  const ex=widgetLang()==='en'
+  const lang = widgetLang();
+  const ex = lang === 'en'
     ? [
       'exercise 1: resample an internal 8-bar texture and turn it into a playable pad.',
       'exercise 2: record 5-10 s from line/mic and use it as a percussive element.',
       'exercise 3: take one tape layer and recycle it into new material for 4 bars.'
     ]
-    : [
-      'ejercicio 1: resamplea una textura interna de 8 compases y conviértela en pad tocable.',
-      'ejercicio 2: graba 5-10 s por line/mic y úsalo como elemento percusivo.',
-      'ejercicio 3: toma una capa del tape y recíclala en material nuevo para 4 compases.'
-    ];
+    : (lang === 'ja'
+      ? [
+        '演習1: 8小節の内部テクスチャをresampleし、演奏できるpadに変換する。',
+        '演習2: line/micから5〜10秒録音し、パーカッシブ要素として使う。',
+        '演習3: Tapeの1レイヤーを新しい4小節素材に再利用する。'
+      ]
+      : [
+        'ejercicio 1: resamplea una textura interna de 8 compases y conviértela en pad tocable.',
+        'ejercicio 2: graba 5-10 s por line/mic y úsalo como elemento percusivo.',
+        'ejercicio 3: toma una capa del tape y recíclala en material nuevo para 4 compases.'
+      ]);
   document.getElementById('wrs-plan').innerHTML += '<br><br><strong style="color:var(--ink)">'+ex[Math.floor(Math.random()*ex.length)]+'</strong>';
 }
 
@@ -1072,6 +1123,28 @@ const wanData = {
       title: 'Mixer — hierarchy and space',
       body: 'Ochre track volume, Blue pan, Gray send, Orange master. Shift opens global bus controls.',
       tip: 'action: lower one background layer by 3–5 points and check if the main focus reads better.'
+    }
+  },
+  ja: {
+    synth: {
+      title: 'Synth — T1/T2/T3/T4 = engine/envelope/FX/LFO',
+      body: 'Ochre/Blue/Grayは現在のengineを操作。Orangeはinstrument volume。encoder上のShiftでADSRを開く。',
+      tip: 'アクション: 1音を固定して、encoderを1つずつ動かし因果を確認。'
+    },
+    drum: {
+      title: 'Drum — sampleスロットと高速編集',
+      body: 'OchreとBlueでstart/end。Grayでsampleのピッチ調整。Orangeで現在instrumentのvolume。',
+      tip: 'アクション: 1スロットだけでstart/endを動かし、短い/長いどちらが機能するか判断。'
+    },
+    tape: {
+      title: 'Tape — 録音・移動・take編集',
+      body: 'Blueでヘッドをscrub。1–4でアクティブtrack選択。Lift/Drop/SplitでTape素材を編集。',
+      tip: 'アクション: 短いtakeをliftし、ヘッドを動かしてdropして編集フローを確認。'
+    },
+    mixer: {
+      title: 'Mixer — 階層と空間',
+      body: 'Ochreはtrack volume、Blueはpan、Grayはsend、Orangeはmaster。Shiftでbus全体の操作。',
+      tip: 'アクション: 背景レイヤーを3–5下げて、主役が前に出るか確認。'
     }
   }
 };

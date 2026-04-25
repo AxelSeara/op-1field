@@ -15,6 +15,7 @@
     if (locales()[v]) return v;
     if (v.startsWith('en') && locales().en) return 'en';
     if (v.startsWith('es') && locales().es) return 'es';
+    if (v.startsWith('ja') && locales().ja) return 'ja';
     return locales()[DEFAULT_LANG] ? DEFAULT_LANG : availableLanguages()[0] || DEFAULT_LANG;
   }
 

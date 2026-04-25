@@ -24,6 +24,7 @@ function detectManualLanguage() {
     return langs.includes('es') ? 'es' : (langs[0] || 'es');
   }
   if (htmlLang.startsWith('en')) return 'en';
+  if (htmlLang.startsWith('ja')) return 'ja';
   return 'es';
 }
 
