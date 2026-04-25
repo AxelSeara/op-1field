@@ -33,6 +33,26 @@ npm run dev
 npm start
 ```
 
+## QA checks
+
+Run locale + structure checks:
+
+```bash
+npm run qa
+```
+
+Run E2E tests:
+
+```bash
+npm run test:e2e
+```
+
+Run full QA locally:
+
+```bash
+npm run qa:full
+```
+
 ## Package desktop builds
 
 Build all configured targets:

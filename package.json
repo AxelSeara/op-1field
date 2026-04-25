@@ -1,6 +1,6 @@
 {
   "name": "op1-field-learning-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Offline-first OP-1 Field learning app",
   "main": "main.js",
   "author": "StreetShark123",
@@ -10,9 +10,15 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "dist:win": "electron-builder --win nsis"
+    "dist:win": "electron-builder --win nsis",
+    "qa:locales": "node scripts/check-locales.mjs",
+    "qa:structure": "node scripts/check-course-structure.mjs",
+    "test:e2e": "playwright test",
+    "qa": "npm run qa:locales && npm run qa:structure",
+    "qa:full": "npm run qa && npm run test:e2e"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "electron": "^31.7.7",
     "electron-builder": "^24.13.3"
   },
