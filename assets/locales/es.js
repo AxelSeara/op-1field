@@ -24,7 +24,7 @@ window.CourseLocales.es = {
       button: 'ajustes',
       title: 'ajustes',
       viewLabel: 'modo de lectura',
-      firmware: 'guía para OP-1 Field firmware 1.6.5',
+      firmware: 'guía para OP-1 Field firmware 1.7.0',
     },
   },
   onboarding: {
@@ -421,7 +421,7 @@ window.CourseLocales.es = {
 <div class="steps">
   <div class="step"><div class="sl">S — Synth</div><div class="sb"><strong>diseña y toca sonido sintetizado</strong><p>El modo Synth es donde seleccionas el engine y tocas con el teclado. Las 4 teclas blandas bajo la pantalla (llamadas T1–T4) controlan los módulos del preset: T1=engine, T2=envelope, T3=FX, T4=LFO. Los 4 encoders controlan los parámetros del módulo activo. En tape mode, esas mismas teclas T1–T4 seleccionan las pistas 1–4.</p></div></div>
   <div class="step"><div class="sl">D — Drum</div><div class="sb"><strong>12 slots de sample asignados al teclado</strong><p>Cada tecla blanca del teclado es un slot de sample. Los samples pueden ser grabados desde el micrófono, transferidos por USB, o sintetizados en Synth mode y capturados. Cada slot tiene su propio volumen, pitch, punto de inicio/fin, y puede tener reverse activado. El modo Drum es donde construyes el kit y donde lo tocas.</p></div></div>
-  <div class="step"><div class="sl">T — Tape</div><div class="sb"><strong>la grabadora de 4 pistas — columna vertebral del workflow</strong><p>El tape es una cinta lineal de 6 minutos con 4 canales simultáneos. Todo lo que produces aterriza aquí. Puedes ver la posición del cabezal en la pantalla, seleccionar qué pista está activa, y ver las formas de onda de lo grabado. El tape no tiene deshacer — cada grabación es permanente hasta que la borras.</p></div></div>
+  <div class="step"><div class="sl">T — Tape</div><div class="sb"><strong>la grabadora de 4 pistas — columna vertebral del workflow</strong><p>El tape es una cinta lineal de 6 minutos con 4 canales simultáneos. Todo lo que produces aterriza aquí. Puedes ver la posición del cabezal en la pantalla, seleccionar qué pista está activa, y ver las formas de onda de lo grabado. En firmware reciente hay undo por tape (mantén <kbd>Tape</kbd> + <kbd class="ar">←</kbd>), pero sigue siendo clave versionar antes de cambios grandes.</p></div></div>
   <div class="step"><div class="sl">M — Mixer</div><div class="sb"><strong>volumen, pan y efectos de las 4 pistas</strong><p>En Mixer mode cada encoder controla un parámetro global de la pista activa: volumen (ochre), pan (blue), send de reverb (gray), volumen master (orange). También accedes al EQ global, master FX y drive desde aquí con Shift. Es el último paso antes de exportar.</p></div></div>
 </div>
 </div>
@@ -508,9 +508,9 @@ window.CourseLocales.es = {
 <div class="steps">
   <div class="step"><div class="sl">físico</div><div class="sb"><strong>4 pistas estéreo por tape · 6 min por tape · lineal</strong><p>No es un loop infinito. Cada tape del OP-1 Field es lineal, con 4 pistas estéreo y 6 minutos de recorrido. Además puedes trabajar con múltiples tapes para versionar y componer por bloques.</p></div></div>
   <div class="step"><div class="sl">pistas</div><div class="sb"><strong>pistas 1-4 funcionan en paralelo</strong><p>La pista activa recibe la grabación. Las otras se reproducen simultáneamente. Puedes grabar en Pista 2 mientras escuchas Pista 1 en loop — esa es la magia del tape.</p></div></div>
-  <div class="step"><div class="sl">loop</div><div class="sb"><strong>activar loop con tape tricks (loop in / loop out / loop on)</strong><p>Define el inicio con <strong>loop in</strong>, el final con <strong>loop out</strong> y activa <strong>loop on/off</strong>. Con el loop activo puedes cambiar de pista y grabar capas mientras escuchas las demás.</p></div></div>
+  <div class="step"><div class="sl">loop</div><div class="sb"><strong>activar loop con tape tricks (loop in / loop out / loop on)</strong><p>Define el inicio con <strong>loop in</strong>, el final con <strong>loop out</strong> y activa <strong>loop on/off</strong>. Si colocas el cabezal sobre una sección y pulsas <kbd>Shift</kbd> + <kbd>Loop</kbd>, el OP-1 Field puede ajustar automáticamente el loop a esa sección sin marcar in/out manualmente. Con el loop activo puedes cambiar de pista y grabar capas mientras escuchas las demás.</p></div></div>
 </div>
-<div class="co"><div class="co-b"></div><div class="co-bd"><strong>advertencia crítica</strong>El tape NO tiene deshacer. Si grabas encima de algo: se pierde. Antes de experimentar, duplica la tape actual para tener una versión de seguridad. Tarda segundos y puede salvarte horas.</div></div>
+<div class="co"><div class="co-b"></div><div class="co-bd"><strong>advertencia crítica</strong>Ahora hay deshacer por tape: mantén <kbd>Tape</kbd> y pulsa <kbd class="ar">←</kbd> para hacer undo en esa cinta. Aun así, sigue siendo buena práctica duplicar la tape antes de cambios agresivos (edición, speed, bounce): tarda segundos y te salva versiones completas.</div></div>
 </div>
 <div class="sec" id="m4-s2">
 <div class="st">flujo de grabación — paso a paso</div>
@@ -541,7 +541,7 @@ window.CourseLocales.es = {
   <div class="step"><div class="sl">flujo</div><div class="sb"><strong>edición típica — curar un jam grabado</strong><p>Supón que grabaste 4 minutos de improvisación en Pista 1. Solo los primeros 30 segundos y una parte en el minuto 2 suenan bien. Proceso: 1) Lleva el cabezal al inicio del segmento bueno usando el encoder azul (scrub). El take se vuelve azul cuando está bajo el cabezal. 2) Pulsa Lift (flecha arriba) — el take queda en el portapapeles. 3) Vuelve al inicio del tape. 4) Drop — pegas esos 30 segundos al inicio. 5) Repite con el fragmento del minuto 2. Resultado: un loop curado de los mejores momentos.</p></div></div>
 </div>
 <div class="co"><div class="co-b bl"></div><div class="co-bd"><strong>tape tricks de performance — teclas 4, 5, 6</strong>Con el tape en reproducción, las teclas 4, 5 y 6 del panel ejecutan efectos en tiempo real que también se graban en el bounce: <strong>4 (Brake):</strong> frena el tape gradualmente mientras la mantienes, luego vuelve a la velocidad normal al soltar. <strong>5 (Reverse):</strong> invierte la reproducción mientras está pulsada. <strong>6 (Chop):</strong> crea stutter sincronizado con el tempo. Estos tres son los efectos de performance característicos del OP-1 — parte de su identidad sonora.</div></div>
-<div class="co"><div class="co-b"></div><div class="co-bd"><strong>regla de oro — versión de tape antes de editar</strong>La edición en tape es destructiva. Lift borra material y Drop puede sobreescribir destino. No hay deshacer. Antes de una sesión de edición, duplica la tape actual: si algo sale mal, vuelves a la versión anterior sin perder el trabajo.</div></div>
+<div class="co"><div class="co-b"></div><div class="co-bd"><strong>regla de oro — versión de tape antes de editar</strong>La edición en tape es destructiva. Lift borra material y Drop puede sobreescribir destino. Aunque existe undo por tape (<kbd>Tape</kbd> + <kbd class="ar">←</kbd>), duplica la tape antes de una sesión de edición: si algo sale mal, vuelves a la versión anterior sin perder el trabajo.</div></div>
 </div>
 
 <div class="widget" id="w-tape-edit">

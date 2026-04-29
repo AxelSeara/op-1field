@@ -24,7 +24,7 @@ window.CourseLocales.ja = {
       "button": "設定",
       "title": "設定",
       "viewLabel": "表示モード",
-      "firmware": "このガイドは OP-1 Field firmware 1.6.5 向けです"
+      "firmware": "このガイドは OP-1 Field firmware 1.7.0 向けです"
     }
   },
   "onboarding": {
