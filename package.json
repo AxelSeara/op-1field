@@ -38,9 +38,7 @@
     },
     "files": [
       "index.html",
-      "op1-curso-final.html",
       "assets/**/*",
-      "docs/**/*",
       "README.md",
       "main.js",
       "package.json"

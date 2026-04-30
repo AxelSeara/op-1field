@@ -60,7 +60,10 @@ function initManualLanguageSwitch() {
   updateLangButtons(current);
 }
 
-function defaultStateFallback() {
+function getDefaultState() {
+  if (window.CourseState && typeof window.CourseState.defaultState === 'function') {
+    return window.CourseState.defaultState();
+  }
   return {
     version: 1,
     lastModule: 0,
@@ -77,9 +80,9 @@ function defaultStateFallback() {
 function loadState() {
   const raw = window.CourseState && typeof window.CourseState.load === 'function'
     ? window.CourseState.load()
-    : defaultStateFallback();
+    : getDefaultState();
 
-  const fallback = defaultStateFallback();
+  const fallback = getDefaultState();
   const merged = { ...fallback, ...raw };
   if (!Array.isArray(merged.completed)) merged.completed = [];
   if (!Array.isArray(merged.bookmarks)) merged.bookmarks = [];

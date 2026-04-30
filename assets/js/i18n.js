@@ -1,22 +1,73 @@
 (function i18nBootstrap() {
   const DEFAULT_LANG = 'es';
   const STORAGE_KEY = 'manual_lang';
+  const SUPPORTED_LANGS = ['es', 'en', 'ja'];
+  const loadingLocales = Object.create(null);
+  const loadedLocaleScripts = new Set();
 
   function locales() {
     return window.CourseLocales || {};
   }
 
   function availableLanguages() {
-    return Object.keys(locales());
+    return [...SUPPORTED_LANGS];
+  }
+
+  function localeScriptPath(lang) {
+    return `assets/locales/${lang}.js`;
+  }
+
+  function isLocaleLoaded(lang) {
+    return Boolean(locales()[lang]);
+  }
+
+  function ensureLocale(lang) {
+    const target = String(lang || '').toLowerCase();
+    if (!SUPPORTED_LANGS.includes(target)) return Promise.resolve(false);
+    if (isLocaleLoaded(target)) return Promise.resolve(true);
+    if (loadingLocales[target]) return loadingLocales[target];
+
+    loadingLocales[target] = new Promise((resolve) => {
+      const src = localeScriptPath(target);
+      if (loadedLocaleScripts.has(src)) {
+        resolve(isLocaleLoaded(target));
+        return;
+      }
+
+      const existing = document.querySelector(`script[src="${src}"]`);
+      if (existing) {
+        existing.addEventListener('load', () => resolve(isLocaleLoaded(target)), { once: true });
+        existing.addEventListener('error', () => resolve(false), { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.addEventListener('load', () => {
+        loadedLocaleScripts.add(src);
+        resolve(isLocaleLoaded(target));
+      }, { once: true });
+      script.addEventListener('error', () => {
+        resolve(false);
+      }, { once: true });
+      document.head.appendChild(script);
+    }).finally(() => {
+      delete loadingLocales[target];
+    });
+
+    return loadingLocales[target];
   }
 
   function normalizeLang(lang) {
     const v = String(lang || '').toLowerCase();
-    if (locales()[v]) return v;
-    if (v.startsWith('en') && locales().en) return 'en';
-    if (v.startsWith('es') && locales().es) return 'es';
-    if (v.startsWith('ja') && locales().ja) return 'ja';
-    return locales()[DEFAULT_LANG] ? DEFAULT_LANG : availableLanguages()[0] || DEFAULT_LANG;
+    if (SUPPORTED_LANGS.includes(v)) return v;
+    const short = v.split('-')[0];
+    if (SUPPORTED_LANGS.includes(short)) return short;
+    if (v.startsWith('en')) return 'en';
+    if (v.startsWith('es')) return 'es';
+    if (v.startsWith('ja')) return 'ja';
+    return DEFAULT_LANG;
   }
 
   function deepGet(obj, path) {
@@ -113,12 +164,17 @@
     currentLang = normalizeLang(lang);
     document.documentElement.setAttribute('lang', currentLang);
     if (options.persist) localStorage.setItem(STORAGE_KEY, currentLang);
-    if (options.applyDom) apply(document);
-    document.dispatchEvent(new CustomEvent('course:i18n-change', { detail: { lang: currentLang } }));
+    ensureLocale(currentLang).finally(() => {
+      if (options.applyDom) apply(document);
+      document.dispatchEvent(new CustomEvent('course:i18n-change', { detail: { lang: currentLang } }));
+    });
     return currentLang;
   }
 
   function init() {
+    if (isLocaleLoaded(DEFAULT_LANG)) {
+      loadedLocaleScripts.add(localeScriptPath(DEFAULT_LANG));
+    }
     setLanguage(currentLang, { persist: false, applyDom: true });
   }
 

@@ -74,11 +74,21 @@
   function bindControls() {
     const app = window.CourseApp;
     if (!app) return;
+    let searchDebounce = null;
 
     const search = byId('module-search');
     if (search) {
       search.addEventListener('input', (e) => {
-        app.setSearchQuery(e.target.value || '');
+        const value = e.target.value || '';
+        clearTimeout(searchDebounce);
+        searchDebounce = setTimeout(() => {
+          app.setSearchQuery(value);
+        }, 180);
+      });
+      search.addEventListener('blur', (e) => {
+        const value = e.target.value || '';
+        clearTimeout(searchDebounce);
+        app.setSearchQuery(value);
       });
     }
 
