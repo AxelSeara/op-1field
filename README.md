@@ -46,7 +46,8 @@ Build outputs are generated in `dist/`.
 
 - `index.html` + `assets/*` = app UI + course content
 - `main.js` = Electron entry
-- `assets/locales/*.js` = language content
+- `assets/content/*.js` = modular module content (`m0..m15`, ES/EN/JA)
+- `assets/locales/*.js` = UI language dictionaries + app text keys
 - `docs/EDITING_GUIDE.md` = content editing notes
 - `CONTRIBUTING.md` = contribution guide
 

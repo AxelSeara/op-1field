@@ -3,10 +3,16 @@
   const STORAGE_KEY = 'manual_lang';
   const SUPPORTED_LANGS = ['es', 'en', 'ja'];
   const loadingLocales = Object.create(null);
+  const loadingContent = Object.create(null);
   const loadedLocaleScripts = new Set();
+  const loadedContentScripts = new Set();
 
   function locales() {
     return window.CourseLocales || {};
+  }
+
+  function content() {
+    return window.CourseContent || {};
   }
 
   function availableLanguages() {
@@ -17,8 +23,16 @@
     return `assets/locales/${lang}.js`;
   }
 
+  function contentScriptPath(lang) {
+    return `assets/content/${lang}.js`;
+  }
+
   function isLocaleLoaded(lang) {
     return Boolean(locales()[lang]);
+  }
+
+  function isContentLoaded(lang) {
+    return Boolean(content()[lang]);
   }
 
   function ensureLocale(lang) {
@@ -57,6 +71,44 @@
     });
 
     return loadingLocales[target];
+  }
+
+  function ensureContent(lang) {
+    const target = String(lang || '').toLowerCase();
+    if (!SUPPORTED_LANGS.includes(target)) return Promise.resolve(false);
+    if (isContentLoaded(target)) return Promise.resolve(true);
+    if (loadingContent[target]) return loadingContent[target];
+
+    loadingContent[target] = new Promise((resolve) => {
+      const src = contentScriptPath(target);
+      if (loadedContentScripts.has(src)) {
+        resolve(isContentLoaded(target));
+        return;
+      }
+
+      const existing = document.querySelector(`script[src="${src}"]`);
+      if (existing) {
+        existing.addEventListener('load', () => resolve(isContentLoaded(target)), { once: true });
+        existing.addEventListener('error', () => resolve(false), { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.addEventListener('load', () => {
+        loadedContentScripts.add(src);
+        resolve(isContentLoaded(target));
+      }, { once: true });
+      script.addEventListener('error', () => {
+        resolve(false);
+      }, { once: true });
+      document.head.appendChild(script);
+    }).finally(() => {
+      delete loadingContent[target];
+    });
+
+    return loadingContent[target];
   }
 
   function normalizeLang(lang) {
@@ -107,9 +159,13 @@
       const base = locales()[DEFAULT_LANG] || {};
       const currModules = deepGet(curr, 'course.modules');
       const baseModules = deepGet(base, 'course.modules');
+      const currContent = content()[currentLang];
+      const baseContent = content()[DEFAULT_LANG];
       const moduleOverrides = {
         ...(baseModules && typeof baseModules === 'object' ? baseModules : {}),
         ...(currModules && typeof currModules === 'object' ? currModules : {}),
+        ...(baseContent && typeof baseContent === 'object' ? baseContent : {}),
+        ...(currContent && typeof currContent === 'object' ? currContent : {}),
       };
 
       Object.entries(moduleOverrides).forEach(([moduleId, moduleHtml]) => {
@@ -164,7 +220,7 @@
     currentLang = normalizeLang(lang);
     document.documentElement.setAttribute('lang', currentLang);
     if (options.persist) localStorage.setItem(STORAGE_KEY, currentLang);
-    ensureLocale(currentLang).finally(() => {
+    Promise.all([ensureLocale(currentLang), ensureContent(currentLang)]).finally(() => {
       if (options.applyDom) apply(document);
       document.dispatchEvent(new CustomEvent('course:i18n-change', { detail: { lang: currentLang } }));
     });
@@ -174,6 +230,9 @@
   function init() {
     if (isLocaleLoaded(DEFAULT_LANG)) {
       loadedLocaleScripts.add(localeScriptPath(DEFAULT_LANG));
+    }
+    if (isContentLoaded(DEFAULT_LANG)) {
+      loadedContentScripts.add(contentScriptPath(DEFAULT_LANG));
     }
     setLanguage(currentLang, { persist: false, applyDom: true });
   }

@@ -8,6 +8,11 @@ const LOCALES = [
   { code: 'en', file: 'assets/locales/en.js' },
   { code: 'ja', file: 'assets/locales/ja.js' },
 ];
+const CONTENT = [
+  { code: 'es', file: 'assets/content/es.js' },
+  { code: 'en', file: 'assets/content/en.js' },
+  { code: 'ja', file: 'assets/content/ja.js' },
+];
 
 const LABELS = {
   es: { interactive: 'pieza interactiva', optional: 'ejercicio guiado opcional' },
@@ -36,6 +41,26 @@ function loadLocale(fileRel, code) {
   return locale;
 }
 
+function loadContent(fileRel, code) {
+  const fileAbs = path.join(ROOT, fileRel);
+  const source = fs.readFileSync(fileAbs, 'utf8');
+  const sandbox = { window: { CourseContent: {} } };
+  vm.createContext(sandbox);
+  vm.runInContext(source, sandbox, { filename: fileAbs });
+  const content = sandbox.window?.CourseContent?.[code];
+  if (!content || typeof content !== 'object') {
+    throw new Error(`Content ${code} not found in ${fileRel}`);
+  }
+  return content;
+}
+
+function resolvedModules(locale, content) {
+  const localeModules = locale?.course?.modules;
+  const base = localeModules && typeof localeModules === 'object' ? localeModules : {};
+  const extra = content && typeof content === 'object' ? content : {};
+  return { ...base, ...extra };
+}
+
 function assert(condition, message, errors) {
   if (!condition) errors.push(message);
 }
@@ -62,10 +87,14 @@ function getLabelMatchesWithNearbyWidget(html, label) {
 
 const errors = [];
 const loaded = {};
+const loadedContent = {};
 
 try {
   for (const { code, file } of LOCALES) {
     loaded[code] = loadLocale(file, code);
+  }
+  for (const { code, file } of CONTENT) {
+    loadedContent[code] = loadContent(file, code);
   }
 } catch (err) {
   console.error(`❌ Content QA load error: ${err.message}`);
@@ -73,9 +102,9 @@ try {
 }
 
 for (const { code } of LOCALES) {
-  const modules = loaded[code]?.course?.modules;
+  const modules = resolvedModules(loaded[code], loadedContent[code]);
   if (!modules || typeof modules !== 'object') {
-    errors.push(`[${code}] Missing course.modules`);
+    errors.push(`[${code}] Missing resolved modules`);
     continue;
   }
 

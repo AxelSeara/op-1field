@@ -8,6 +8,11 @@ const LOCALES = [
   { code: 'en', file: 'assets/locales/en.js' },
   { code: 'ja', file: 'assets/locales/ja.js' },
 ];
+const CONTENT = [
+  { code: 'es', file: 'assets/content/es.js' },
+  { code: 'en', file: 'assets/content/en.js' },
+  { code: 'ja', file: 'assets/content/ja.js' },
+];
 const EXPECTED_MODULES = Array.from({ length: 16 }, (_, i) => `m${i}`);
 
 function loadLocale(fileRel, code) {
@@ -21,6 +26,26 @@ function loadLocale(fileRel, code) {
     throw new Error(`Locale ${code} not found in ${fileRel}`);
   }
   return locale;
+}
+
+function loadContent(fileRel, code) {
+  const fileAbs = path.join(ROOT, fileRel);
+  const source = fs.readFileSync(fileAbs, 'utf8');
+  const sandbox = { window: { CourseContent: {} } };
+  vm.createContext(sandbox);
+  vm.runInContext(source, sandbox, { filename: fileAbs });
+  const content = sandbox.window?.CourseContent?.[code];
+  if (!content || typeof content !== 'object') {
+    throw new Error(`Content ${code} not found in ${fileRel}`);
+  }
+  return content;
+}
+
+function resolvedModules(locale, content) {
+  const localeModules = locale?.course?.modules;
+  const base = localeModules && typeof localeModules === 'object' ? localeModules : {};
+  const extra = content && typeof content === 'object' ? content : {};
+  return { ...base, ...extra };
 }
 
 function collectLeafPaths(obj, base = '', out = new Set()) {
@@ -41,20 +66,24 @@ function assert(condition, message, errors) {
 
 let errors = [];
 const loaded = {};
+const loadedContent = {};
 
 try {
   for (const { code, file } of LOCALES) {
     loaded[code] = loadLocale(file, code);
   }
+  for (const { code, file } of CONTENT) {
+    loadedContent[code] = loadContent(file, code);
+  }
 } catch (err) {
-  console.error(`❌ Locale load error: ${err.message}`);
+  console.error(`❌ Locale/content load error: ${err.message}`);
   process.exit(1);
 }
 
 for (const { code } of LOCALES) {
   const locale = loaded[code];
-  const modules = locale?.course?.modules;
-  assert(modules && typeof modules === 'object', `[${code}] Missing course.modules`, errors);
+  const modules = resolvedModules(locale, loadedContent[code]);
+  assert(modules && typeof modules === 'object', `[${code}] Missing resolved modules`, errors);
   if (!modules || typeof modules !== 'object') continue;
 
   const moduleKeys = Object.keys(modules);
@@ -95,6 +124,6 @@ if (errors.length) {
 
 console.log('✅ Locale QA passed');
 for (const { code } of LOCALES) {
-  const count = Object.keys(loaded[code].course.modules).length;
+  const count = Object.keys(resolvedModules(loaded[code], loadedContent[code])).length;
   console.log(`- ${code}: ${count}/16 modules`);
 }

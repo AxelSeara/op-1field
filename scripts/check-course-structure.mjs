@@ -8,6 +8,11 @@ const LOCALES = [
   { code: 'en', file: 'assets/locales/en.js' },
   { code: 'ja', file: 'assets/locales/ja.js' },
 ];
+const CONTENT = [
+  { code: 'es', file: 'assets/content/es.js' },
+  { code: 'en', file: 'assets/content/en.js' },
+  { code: 'ja', file: 'assets/content/ja.js' },
+];
 const JS_FILES = ['assets/js/core.js', 'assets/js/widgets.js', 'assets/js/app-shell.js'];
 
 function loadLocale(fileRel, code) {
@@ -21,6 +26,26 @@ function loadLocale(fileRel, code) {
     throw new Error(`Locale ${code} not found in ${fileRel}`);
   }
   return locale;
+}
+
+function loadContent(fileRel, code) {
+  const fileAbs = path.join(ROOT, fileRel);
+  const source = fs.readFileSync(fileAbs, 'utf8');
+  const sandbox = { window: { CourseContent: {} } };
+  vm.createContext(sandbox);
+  vm.runInContext(source, sandbox, { filename: fileAbs });
+  const content = sandbox.window?.CourseContent?.[code];
+  if (!content || typeof content !== 'object') {
+    throw new Error(`Content ${code} not found in ${fileRel}`);
+  }
+  return content;
+}
+
+function resolvedModules(locale, content) {
+  const localeModules = locale?.course?.modules;
+  const base = localeModules && typeof localeModules === 'object' ? localeModules : {};
+  const extra = content && typeof content === 'object' ? content : {};
+  return { ...base, ...extra };
 }
 
 function assert(condition, message, errors) {
@@ -61,10 +86,14 @@ function getDeclaredFunctions() {
 
 const errors = [];
 const loaded = {};
+const loadedContent = {};
 
 try {
   for (const { code, file } of LOCALES) {
     loaded[code] = loadLocale(file, code);
+  }
+  for (const { code, file } of CONTENT) {
+    loadedContent[code] = loadContent(file, code);
   }
 } catch (err) {
   console.error(`❌ Structure load error: ${err.message}`);
@@ -74,8 +103,8 @@ try {
 const declaredFns = getDeclaredFunctions();
 
 for (const { code } of LOCALES) {
-  const modules = loaded[code]?.course?.modules;
-  assert(modules && typeof modules === 'object', `[${code}] Missing course.modules`, errors);
+  const modules = resolvedModules(loaded[code], loadedContent[code]);
+  assert(modules && typeof modules === 'object', `[${code}] Missing resolved modules`, errors);
   if (!modules || typeof modules !== 'object') continue;
 
   const duplicates = getDuplicateIds(modules);
@@ -94,9 +123,9 @@ for (const { code } of LOCALES) {
   );
 }
 
-const baseSig = getSignature(loaded.en.course.modules);
+const baseSig = getSignature(resolvedModules(loaded.en, loadedContent.en));
 for (const code of ['es', 'ja']) {
-  const sig = getSignature(loaded[code].course.modules);
+  const sig = getSignature(resolvedModules(loaded[code], loadedContent[code]));
   const missingAnchors = [...baseSig.anchors].filter((x) => !sig.anchors.has(x));
   const extraAnchors = [...sig.anchors].filter((x) => !baseSig.anchors.has(x));
   const missingOnclick = [...baseSig.onclickFns].filter((x) => !sig.onclickFns.has(x));

@@ -16,8 +16,10 @@ Primary references:
 - `assets/js/core.js`: course engine (navigation, progress, core/full path logic)
 - `assets/js/app-shell.js`: onboarding + product UI controls
 - `assets/js/widgets.js`: interactive audio/teaching widgets
-- `assets/locales/es.js`: Spanish dictionary
-- `assets/locales/en.js`: English dictionary
+- `assets/content/*.js`: modular course content (pilot modules m0..m3 by language)
+- `assets/locales/es.js`: Spanish UI dictionary (labels, buttons, copy outside modules)
+- `assets/locales/en.js`: English UI dictionary
+- `assets/locales/ja.js`: Japanese UI dictionary
 - `main.js`: Electron main process
 - `package.json`: desktop scripts and packaging config
 - `op1-curso-final.html`: compatibility redirect to `index.html`
@@ -26,7 +28,8 @@ Primary references:
 
 If you want to edit...
 
-- Course text/content: edit `index.html`
+- Full course text/content (`m0..m15`): edit `assets/content/es.js`, `assets/content/en.js`, `assets/content/ja.js`
+- Layout shell and static chrome: edit `index.html`
 - Visual style: edit `assets/css/main.css`
 - Sidebar/subsection navigation logic: edit `assets/js/core.js`
 - Product controls (onboarding/search/modes): edit `assets/js/app-shell.js`
@@ -63,12 +66,14 @@ For translatable UI text:
 - use `data-i18n-placeholder="..."` for inputs
 - add matching keys in `assets/locales/es.js` and `assets/locales/en.js`
 
-For full module-level replacement in another language, use optional `course.modules.<moduleId>` overrides in locale dictionaries.
+For module-level content, use `assets/content/<lang>.js` (`m0..m15`).
+Locale files now focus on UI text keys and app chrome labels.
 
 Current setup:
 
-- All modules `m0..m15` are externalized in `assets/locales/es.js` under `course.modules`.
-- This makes Spanish educational copy review easier without editing the full `index.html`.
+- `m0..m15` are served from `assets/content/<lang>.js`.
+- `assets/locales/<lang>.js` remains as UI i18n + compatibility fallback.
+- Runtime precedence is: current language content file → default language content file → current locale module → default locale module.
 
 ## Before committing
 
